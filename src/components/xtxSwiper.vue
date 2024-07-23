@@ -1,56 +1,36 @@
+<template>
+  <view class="carousel">
+    <swiper :circular="true" :autoplay="false" :interval="3000" @change="onchange">
+      <swiper-item v-for="item in list" ::key="item.id">
+        <navigator url="/pages/index/index" hover-class="none" class="navigator">
+          <image mode="aspectFill" class="image" :src="item.imgUrl"></image>
+        </navigator>
+      </swiper-item>
+
+    </swiper>
+    <!-- 指示点 -->
+    <view class="indicator">
+      <text v-for="(item, index) in list" :key="item.id" class="dot" :class="{ active: index === activeIndex }"></text>
+    </view>
+  </view>
+</template>
+
 <script setup lang="ts">
 import { ref } from 'vue'
-
+import type { bannerImg } from '@/pages/index/types/banner'
 const activeIndex = ref(0)
 // 当swiper发动滑动时候触发onchange
 const onchange: UniHelper.SwiperOnChange = (e) => {
   // 主观上排除
   activeIndex.value = e.detail?.current
 }
+const props = defineProps<{
+  list: bannerImg[]
+}>()
+
 </script>
 
-<template>
-  <view class="carousel">
-    <swiper :circular="true" :autoplay="false" :interval="3000" @change="onchange">
-      <swiper-item>
-        <navigator url="/pages/index/index" hover-class="none" class="navigator">
-          <image
-            mode="aspectFill"
-            class="image"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/slider_1.jpg"
-          ></image>
-        </navigator>
-      </swiper-item>
-      <swiper-item>
-        <navigator url="/pages/index/index" hover-class="none" class="navigator">
-          <image
-            mode="aspectFill"
-            class="image"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/slider_2.jpg"
-          ></image>
-        </navigator>
-      </swiper-item>
-      <swiper-item>
-        <navigator url="/pages/index/index" hover-class="none" class="navigator">
-          <image
-            mode="aspectFill"
-            class="image"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/slider_3.jpg"
-          ></image>
-        </navigator>
-      </swiper-item>
-    </swiper>
-    <!-- 指示点 -->
-    <view class="indicator">
-      <text
-        v-for="(item, index) in 3"
-        :key="item"
-        class="dot"
-        :class="{ active: index === activeIndex }"
-      ></text>
-    </view>
-  </view>
-</template>
+
 
 <style lang="scss">
 /* 轮播图 */
@@ -60,6 +40,7 @@ const onchange: UniHelper.SwiperOnChange = (e) => {
   overflow: hidden;
   transform: translateY(0);
   background-color: #efefef;
+
   .indicator {
     position: absolute;
     left: 0;
@@ -67,6 +48,7 @@ const onchange: UniHelper.SwiperOnChange = (e) => {
     bottom: 16rpx;
     display: flex;
     justify-content: center;
+
     .dot {
       width: 30rpx;
       height: 6rpx;
@@ -74,10 +56,12 @@ const onchange: UniHelper.SwiperOnChange = (e) => {
       border-radius: 6rpx;
       background-color: rgba(255, 255, 255, 0.4);
     }
+
     .active {
       background-color: #fff;
     }
   }
+
   .navigator,
   .image {
     width: 100%;
